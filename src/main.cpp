@@ -1,62 +1,76 @@
-#include "bplus_tree.h"
+#include "tokenizer.h"
 #include <iostream>
 
 using namespace std;
 
+void print_token_type(TokenType type) {
+    switch(type) {
+        case TokenType::KEYWORD: cout << "KEYWORD"; break;
+        case TokenType::IDENTIFIER: cout << "IDENTIFIER"; break;
+        case TokenType::NUMBER: cout << "NUMBER"; break;
+        case TokenType::STRING: cout << "STRING"; break;
+        case TokenType::OPERATOR: cout << "OPERATOR"; break;
+        case TokenType::SYMBOL: cout << "SYMBOL"; break;
+        case TokenType::END_OF_INPUT: cout << "EOF"; break;
+    }
+}
+
 int main() {
-    cout << "=== B+ Tree Test ===\n\n";
+    cout << "=== Tokenizer Test ===\n\n";
     
-    BPlusTree<int, string> tree;
+    Tokenizer tokenizer;
     
-    cout << "Test 1: Insert 8 entries\n";
-    tree.insert(10, "Alice");
-    tree.insert(20, "Bob");
-    tree.insert(30, "Charlie");
-    tree.insert(40, "David");
-    tree.insert(50, "Eve");
-    tree.insert(60, "Frank");
-    tree.insert(70, "Grace");
-    tree.insert(80, "Henry");
-    cout << "Inserted successfully\n\n";
-    
-    cout << "Tree structure:\n";
-    tree.print();
-    cout << "\n";
-    
-    cout << "Test 2: Search\n";
-    auto val = tree.search(30);
-    if (val) {
-        cout << "Found key 30: " << *val << "\n";
-    }
-    
-    val = tree.search(60);
-    if (val) {
-        cout << "Found key 60: " << *val << "\n";
-    }
-    
-    val = tree.search(99);
-    if (!val) {
-        cout << "Key 99 not found (expected)\n";
+    cout << "Test 1: SELECT statement\n";
+    string sql1 = "SELECT name FROM users";
+    auto tokens = tokenizer.tokenize(sql1);
+    cout << "Input: " << sql1 << "\n";
+    cout << "Tokens:\n";
+    for (const auto& token : tokens) {
+        if (token.type == TokenType::END_OF_INPUT) break;
+        cout << "  ";
+        print_token_type(token.type);
+        cout << " : '" << token.value << "'\n";
     }
     cout << "\n";
     
-    cout << "Test 3: Range search (25-65)\n";
-    auto results = tree.range_search(25, 65);
-    for (const auto& r : results) {
-        cout << "  " << r << "\n";
+    cout << "Test 2: WHERE clause\n";
+    string sql2 = "SELECT * FROM users WHERE age > 30";
+    tokens = tokenizer.tokenize(sql2);
+    cout << "Input: " << sql2 << "\n";
+    cout << "Tokens:\n";
+    for (const auto& token : tokens) {
+        if (token.type == TokenType::END_OF_INPUT) break;
+        cout << "  ";
+        print_token_type(token.type);
+        cout << " : '" << token.value << "'\n";
     }
     cout << "\n";
     
-    cout << "Test 4: Insert more entries\n";
-    tree.insert(15, "Iris");
-    tree.insert(25, "Jack");
-    tree.insert(35, "Kate");
-    tree.insert(45, "Liam");
-    cout << "Inserted 4 more entries\n";
-    cout << "Tree structure after splits:\n";
-    tree.print();
+    cout << "Test 3: INSERT statement\n";
+    string sql3 = "INSERT INTO users VALUES (1, 'Alice')";
+    tokens = tokenizer.tokenize(sql3);
+    cout << "Input: " << sql3 << "\n";
+    cout << "Tokens:\n";
+    for (const auto& token : tokens) {
+        if (token.type == TokenType::END_OF_INPUT) break;
+        cout << "  ";
+        print_token_type(token.type);
+        cout << " : '" << token.value << "'\n";
+    }
     cout << "\n";
     
-    cout << "=== All tests passed ===\n";
+    cout << "Test 4: Case insensitive\n";
+    string sql4 = "select name from users where id = 5";
+    tokens = tokenizer.tokenize(sql4);
+    cout << "Input: " << sql4 << "\n";
+    cout << "Tokens:\n";
+    for (const auto& token : tokens) {
+        if (token.type == TokenType::END_OF_INPUT) break;
+        cout << "  ";
+        print_token_type(token.type);
+        cout << " : '" << token.value << "'\n";
+    }
+    
+    cout << "\n=== All tests completed ===\n";
     return 0;
 }
