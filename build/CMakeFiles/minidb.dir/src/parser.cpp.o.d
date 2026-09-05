@@ -1,5 +1,6 @@
-CMakeFiles/minidb.dir/src/main.cpp.o: \
- C:/Users/user/creating_my_own_database/database-engine/src/main.cpp \
+CMakeFiles/minidb.dir/src/parser.cpp.o: \
+ C:/Users/user/creating_my_own_database/database-engine/src/parser.cpp \
+ C:/Users/user/creating_my_own_database/database-engine/include/parser.h \
  C:/Users/user/creating_my_own_database/database-engine/include/tokenizer.h \
  C:/msys64/ucrt64/include/c++/16.1.0/string \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/requires_hosted.h \
@@ -106,8 +107,6 @@ CMakeFiles/minidb.dir/src/main.cpp.o: \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/stl_vector.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/stl_bvector.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/vector.tcc \
- C:/Users/user/creating_my_own_database/database-engine/include/parser.h \
- C:/Users/user/creating_my_own_database/database-engine/include/tokenizer.h \
  C:/msys64/ucrt64/include/c++/16.1.0/memory \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/stl_tempbuf.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/stl_raw_storage_iter.h \

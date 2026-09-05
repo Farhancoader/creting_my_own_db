@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/c/Users/user/creating_my_own_database/database-engine/src/main.cpp" "CMakeFiles/minidb.dir/src/main.cpp.o" "gcc" "CMakeFiles/minidb.dir/src/main.cpp.o.d"
+  "/c/Users/user/creating_my_own_database/database-engine/src/parser.cpp" "CMakeFiles/minidb.dir/src/parser.cpp.o" "gcc" "CMakeFiles/minidb.dir/src/parser.cpp.o.d"
   "/c/Users/user/creating_my_own_database/database-engine/src/tokenizer.cpp" "CMakeFiles/minidb.dir/src/tokenizer.cpp.o" "gcc" "CMakeFiles/minidb.dir/src/tokenizer.cpp.o.d"
   )
 
