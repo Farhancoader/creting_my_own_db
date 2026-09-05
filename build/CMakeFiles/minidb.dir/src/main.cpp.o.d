@@ -148,14 +148,15 @@ CMakeFiles/minidb.dir/src/main.cpp.o: \
  C:/msys64/ucrt64/include/c++/16.1.0/pstl/execution_defs.h \
  C:/Users/user/creating_my_own_database/database-engine/include/executor.h \
  C:/Users/user/creating_my_own_database/database-engine/include/parser.h \
+ C:/Users/user/creating_my_own_database/database-engine/include/table_manager.h \
+ C:/Users/user/creating_my_own_database/database-engine/include/storage_engine.h \
  C:/msys64/ucrt64/include/c++/16.1.0/map \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/stl_tree.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/node_handle.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/stl_map.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/stl_multimap.h \
- C:/msys64/ucrt64/include/c++/16.1.0/iostream \
- C:/msys64/ucrt64/include/c++/16.1.0/ostream \
- C:/msys64/ucrt64/include/c++/16.1.0/bits/ostream.h \
+ C:/msys64/ucrt64/include/c++/16.1.0/fstream \
+ C:/msys64/ucrt64/include/c++/16.1.0/istream \
  C:/msys64/ucrt64/include/c++/16.1.0/ios \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/ios_base.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/locale_classes.h \
@@ -176,7 +177,16 @@ CMakeFiles/minidb.dir/src/main.cpp.o: \
  C:/msys64/ucrt64/include/c++/16.1.0/x86_64-w64-mingw32/bits/ctype_inline.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/locale_facets.tcc \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/basic_ios.tcc \
+ C:/msys64/ucrt64/include/c++/16.1.0/ostream \
+ C:/msys64/ucrt64/include/c++/16.1.0/bits/ostream.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/ostream_print.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/ostream.tcc \
- C:/msys64/ucrt64/include/c++/16.1.0/istream \
- C:/msys64/ucrt64/include/c++/16.1.0/bits/istream.tcc
+ C:/msys64/ucrt64/include/c++/16.1.0/bits/istream.tcc \
+ C:/msys64/ucrt64/include/c++/16.1.0/bits/codecvt.h \
+ C:/msys64/ucrt64/include/c++/16.1.0/x86_64-w64-mingw32/bits/basic_file.h \
+ C:/msys64/ucrt64/include/c++/16.1.0/x86_64-w64-mingw32/bits/c++io.h \
+ C:/msys64/ucrt64/include/c++/16.1.0/bits/fstream.tcc \
+ C:/msys64/ucrt64/include/c++/16.1.0/cstdint \
+ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/16.1.0/include/stdint.h \
+ C:/msys64/ucrt64/include/stdint.h \
+ C:/msys64/ucrt64/include/c++/16.1.0/iostream

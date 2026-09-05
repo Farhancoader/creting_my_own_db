@@ -10,7 +10,6 @@ const unordered_set<string> keywords = {
     "CREATE", "TABLE", "DELETE", "UPDATE", "AND", "OR"
 };
 
-// Helper: convert string to uppercase
 string to_upper(const string& str) {
     string result = str;
     transform(result.begin(), result.end(), result.begin(), ::toupper);
@@ -22,7 +21,6 @@ vector<Token> Tokenizer::tokenize(const string &input) {
     size_t i = 0;
     
     while (i < input.size()) {
-        // Skip whitespace
         while (i < input.size() && isspace(input[i])) {
             i++;
         }
@@ -59,13 +57,13 @@ vector<Token> Tokenizer::tokenize(const string &input) {
         
         // String literals
         if (input[i] == '\'') {
-            i++; // skip opening quote
+            i++;
             string value;
             while (i < input.size() && input[i] != '\'') {
                 value += input[i];
                 i++;
             }
-            if (i < input.size()) i++; // skip closing quote
+            if (i < input.size()) i++;
             tokens.push_back({TokenType::STRING, value});
             continue;
         }
@@ -85,9 +83,9 @@ vector<Token> Tokenizer::tokenize(const string &input) {
             continue;
         }
         
-        // Symbols: (, ), ,, ;
+        // Symbols: (, ), ,, ;, *
         if (input[i] == ',' || input[i] == '(' || 
-            input[i] == ')' || input[i] == ';') {
+            input[i] == ')' || input[i] == ';' || input[i] == '*') {
             string symbol;
             symbol += input[i];
             tokens.push_back({TokenType::SYMBOL, symbol});
@@ -95,6 +93,7 @@ vector<Token> Tokenizer::tokenize(const string &input) {
             continue;
         }
         
+        // Unknown character - skip it
         i++;
     }
     

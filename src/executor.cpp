@@ -1,10 +1,18 @@
 #include "executor.h"
 #include <iostream>
-#include <sstream>
 
 using namespace std;
 
-Executor::Executor() {}
+Executor::Executor() {
+    table_manager = new TableManager("minidb_data");
+}
+
+Executor::~Executor() {
+    if (table_manager) {
+        table_manager->save_all();
+        delete table_manager;
+    }
+}
 
 QueryResult* Executor::error(const string& msg) {
     QueryResult* result = new QueryResult();
@@ -34,18 +42,14 @@ QueryResult* Executor::execute(Query* query) {
 }
 
 QueryResult* Executor::execute_create(CreateQuery* query) {
-    if (tables.find(query->table) != tables.end()) {
+    if (!table_manager->create_table(query->table, query->columns)) {
         return error("Table already exists");
     }
-    
-    tables[query->table] = vector<Row>();
-    schemas[query->table] = query->columns;
-    
     return success();
 }
 
 QueryResult* Executor::execute_insert(InsertQuery* query) {
-    if (tables.find(query->table) == tables.end()) {
+    if (!table_manager->table_exists(query->table)) {
         return error("Table does not exist");
     }
     
@@ -53,12 +57,14 @@ QueryResult* Executor::execute_insert(InsertQuery* query) {
         return error("Column count mismatch");
     }
     
-    Row row;
+    map<string, string> row;
     for (size_t i = 0; i < query->columns.size(); i++) {
-        row.data[query->columns[i]] = query->values[i];
+        row[query->columns[i]] = query->values[i];
     }
     
-    tables[query->table].push_back(row);
+    if (!table_manager->insert_row(query->table, row)) {
+        return error("Failed to insert row");
+    }
     
     return success();
 }
@@ -118,25 +124,31 @@ QueryResult* Executor::execute_select(SelectQuery* query) {
     result->success = true;
     result->error_message = "";
     
-    if (tables.find(query->table) == tables.end()) {
+    if (!table_manager->table_exists(query->table)) {
         result->success = false;
         result->error_message = "Table does not exist";
         return result;
     }
     
+    auto schema = table_manager->get_schema(query->table);
+    
     // Set columns
     if (query->columns[0] == "*") {
-        if (schemas.find(query->table) != schemas.end()) {
-            for (const auto& col : schemas[query->table]) {
-                result->columns.push_back(col.first);
-            }
+        for (const auto& col : schema.columns) {
+            result->columns.push_back(col.first);
         }
     } else {
         result->columns = query->columns;
     }
     
+    // Get all rows
+    auto all_rows = table_manager->get_all_rows(query->table);
+    
     // Filter and collect rows
-    for (const auto& row : tables[query->table]) {
+    for (const auto& row_data : all_rows) {
+        Row row;
+        row.data = row_data;
+        
         if (query->where) {
             if (!evaluate_condition(row, query->where)) {
                 continue;
@@ -149,7 +161,7 @@ QueryResult* Executor::execute_select(SelectQuery* query) {
 }
 
 QueryResult* Executor::execute_delete(DeleteQuery* query) {
-    if (tables.find(query->table) == tables.end()) {
+    if (!table_manager->table_exists(query->table)) {
         return error("Table does not exist");
     }
     
@@ -157,14 +169,19 @@ QueryResult* Executor::execute_delete(DeleteQuery* query) {
         return error("DELETE requires WHERE clause");
     }
     
-    auto& rows = tables[query->table];
-    auto it = rows.begin();
-    while (it != rows.end()) {
-        if (evaluate_condition(*it, query->where)) {
-            it = rows.erase(it);
-        } else {
-            ++it;
+    auto all_rows = table_manager->get_all_rows(query->table);
+    vector<int> to_delete;
+    
+    for (size_t i = 0; i < all_rows.size(); i++) {
+        Row row;
+        row.data = all_rows[i];
+        if (evaluate_condition(row, query->where)) {
+            to_delete.push_back(i);
         }
+    }
+    
+    if (!table_manager->delete_rows(query->table, to_delete)) {
+        return error("Failed to delete rows");
     }
     
     return success();

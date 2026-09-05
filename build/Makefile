@@ -201,6 +201,30 @@ src/parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/minidb.dir/build.make CMakeFiles/minidb.dir/src/parser.cpp.s
 .PHONY : src/parser.cpp.s
 
+src/table_manager.o: src/table_manager.cpp.o
+.PHONY : src/table_manager.o
+
+# target to build an object file
+src/table_manager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minidb.dir/build.make CMakeFiles/minidb.dir/src/table_manager.cpp.o
+.PHONY : src/table_manager.cpp.o
+
+src/table_manager.i: src/table_manager.cpp.i
+.PHONY : src/table_manager.i
+
+# target to preprocess a source file
+src/table_manager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minidb.dir/build.make CMakeFiles/minidb.dir/src/table_manager.cpp.i
+.PHONY : src/table_manager.cpp.i
+
+src/table_manager.s: src/table_manager.cpp.s
+.PHONY : src/table_manager.s
+
+# target to generate assembly for a file
+src/table_manager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minidb.dir/build.make CMakeFiles/minidb.dir/src/table_manager.cpp.s
+.PHONY : src/table_manager.cpp.s
+
 src/tokenizer.o: src/tokenizer.cpp.o
 .PHONY : src/tokenizer.o
 
@@ -243,6 +267,9 @@ help:
 	@echo "... src/parser.o"
 	@echo "... src/parser.i"
 	@echo "... src/parser.s"
+	@echo "... src/table_manager.o"
+	@echo "... src/table_manager.i"
+	@echo "... src/table_manager.s"
 	@echo "... src/tokenizer.o"
 	@echo "... src/tokenizer.i"
 	@echo "... src/tokenizer.s"

@@ -10,6 +10,7 @@ add_executable(minidb
     src/tokenizer.cpp
     src/parser.cpp
     src/executor.cpp
+    src/table_manager.cpp
 )
 
 target_include_directories(minidb

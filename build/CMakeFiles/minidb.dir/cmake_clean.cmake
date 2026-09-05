@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/minidb.dir/src/main.cpp.o.d"
   "CMakeFiles/minidb.dir/src/parser.cpp.o"
   "CMakeFiles/minidb.dir/src/parser.cpp.o.d"
+  "CMakeFiles/minidb.dir/src/table_manager.cpp.o"
+  "CMakeFiles/minidb.dir/src/table_manager.cpp.o.d"
   "CMakeFiles/minidb.dir/src/tokenizer.cpp.o"
   "CMakeFiles/minidb.dir/src/tokenizer.cpp.o.d"
   "libminidb.dll.a"

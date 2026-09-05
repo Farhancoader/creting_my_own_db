@@ -2,9 +2,11 @@
 #define EXECUTOR_H
 
 #include "parser.h"
+#include "table_manager.h"
 #include <vector>
 #include <map>
 #include <string>
+#include <memory>
 
 using namespace std;
 
@@ -21,11 +23,12 @@ struct QueryResult {
 
 class Executor {
 private:
-    map<string, vector<Row>> tables;
-    map<string, vector<pair<string, string>>> schemas;
+    TableManager* table_manager;
     
 public:
     Executor();
+    ~Executor();
+    
     QueryResult* execute(Query* query);
     
 private:
