@@ -129,6 +129,30 @@ minidb/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/minidb.dir/build.make CMakeFiles/minidb.dir/build
 .PHONY : minidb/fast
 
+src/executor.o: src/executor.cpp.o
+.PHONY : src/executor.o
+
+# target to build an object file
+src/executor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minidb.dir/build.make CMakeFiles/minidb.dir/src/executor.cpp.o
+.PHONY : src/executor.cpp.o
+
+src/executor.i: src/executor.cpp.i
+.PHONY : src/executor.i
+
+# target to preprocess a source file
+src/executor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minidb.dir/build.make CMakeFiles/minidb.dir/src/executor.cpp.i
+.PHONY : src/executor.cpp.i
+
+src/executor.s: src/executor.cpp.s
+.PHONY : src/executor.s
+
+# target to generate assembly for a file
+src/executor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minidb.dir/build.make CMakeFiles/minidb.dir/src/executor.cpp.s
+.PHONY : src/executor.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -210,6 +234,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... minidb"
+	@echo "... src/executor.o"
+	@echo "... src/executor.i"
+	@echo "... src/executor.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

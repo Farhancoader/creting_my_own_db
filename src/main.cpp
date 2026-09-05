@@ -1,92 +1,143 @@
 #include "tokenizer.h"
 #include "parser.h"
+#include "executor.h"
 #include <iostream>
 
 using namespace std;
 
-void print_query(Query* query) {
-    if (query->type == QueryType::SELECT) {
-        SelectQuery* q = (SelectQuery*)query;
-        cout << "SELECT Query:\n";
-        cout << "  Columns: ";
-        for (const auto& col : q->columns) cout << col << " ";
-        cout << "\n  Table: " << q->table << "\n";
-        if (q->where) {
-            cout << "  WHERE: " << q->where->column << " " 
-                 << q->where->op << " " << q->where->value << "\n";
-        }
-    } else if (query->type == QueryType::INSERT) {
-        InsertQuery* q = (InsertQuery*)query;
-        cout << "INSERT Query:\n";
-        cout << "  Table: " << q->table << "\n";
-        cout << "  Columns: ";
-        for (const auto& col : q->columns) cout << col << " ";
-        cout << "\n  Values: ";
-        for (const auto& val : q->values) cout << val << " ";
-        cout << "\n";
-    } else if (query->type == QueryType::DELETE) {
-        DeleteQuery* q = (DeleteQuery*)query;
-        cout << "DELETE Query:\n";
-        cout << "  Table: " << q->table << "\n";
-        if (q->where) {
-            cout << "  WHERE: " << q->where->column << " " 
-                 << q->where->op << " " << q->where->value << "\n";
-        }
-    } else if (query->type == QueryType::CREATE) {
-        CreateQuery* q = (CreateQuery*)query;
-        cout << "CREATE Query:\n";
-        cout << "  Table: " << q->table << "\n";
-        cout << "  Columns: ";
-        for (const auto& col : q->columns) {
-            cout << col.first << " " << col.second << ", ";
-        }
-        cout << "\n";
-    }
-}
-
 int main() {
-    cout << "=== Parser Test ===\n\n";
+    cout << "=== Mini SQL Database ===\n\n";
     
     Tokenizer tokenizer;
+    Executor executor;
     
-    // Test 1: SELECT
-    cout << "Test 1: SELECT statement\n";
-    string sql1 = "SELECT name, age FROM users WHERE age > 30";
+    // Test 1: CREATE TABLE
+    cout << "Test 1: CREATE TABLE users\n";
+    string sql1 = "CREATE TABLE users (id INT, name TEXT, age INT)";
     auto tokens1 = tokenizer.tokenize(sql1);
     Parser parser1(tokens1);
     auto q1 = parser1.parse();
-    print_query(q1);
+    auto result1 = executor.execute(q1);
+    cout << (result1->success ? "✓ Success" : "✗ Failed: " + result1->error_message) << "\n\n";
     delete q1;
-    cout << "\n";
+    delete result1;
     
     // Test 2: INSERT
-    cout << "Test 2: INSERT statement\n";
+    cout << "Test 2: INSERT INTO users\n";
     string sql2 = "INSERT INTO users (id, name, age) VALUES (1, 'Alice', 30)";
     auto tokens2 = tokenizer.tokenize(sql2);
     Parser parser2(tokens2);
     auto q2 = parser2.parse();
-    print_query(q2);
+    auto result2 = executor.execute(q2);
+    cout << (result2->success ? "✓ Success" : "✗ Failed: " + result2->error_message) << "\n";
     delete q2;
-    cout << "\n";
+    delete result2;
     
-    // Test 3: DELETE
-    cout << "Test 3: DELETE statement\n";
-    string sql3 = "DELETE FROM users WHERE id = 5";
+    cout << "Test 2b: INSERT another row\n";
+    string sql2b = "INSERT INTO users (id, name, age) VALUES (2, 'Bob', 25)";
+    auto tokens2b = tokenizer.tokenize(sql2b);
+    Parser parser2b(tokens2b);
+    auto q2b = parser2b.parse();
+    auto result2b = executor.execute(q2b);
+    cout << (result2b->success ? "✓ Success" : "✗ Failed: " + result2b->error_message) << "\n";
+    delete q2b;
+    delete result2b;
+    
+    cout << "Test 2c: INSERT third row\n";
+    string sql2c = "INSERT INTO users (id, name, age) VALUES (3, 'Charlie', 35)";
+    auto tokens2c = tokenizer.tokenize(sql2c);
+    Parser parser2c(tokens2c);
+    auto q2c = parser2c.parse();
+    auto result2c = executor.execute(q2c);
+    cout << (result2c->success ? "✓ Success" : "✗ Failed: " + result2c->error_message) << "\n\n";
+    delete q2c;
+    delete result2c;
+    
+    // Test 3: SELECT all
+    cout << "Test 3: SELECT id, name, age FROM users\n";
+    string sql3 = "SELECT id, name, age FROM users";
     auto tokens3 = tokenizer.tokenize(sql3);
     Parser parser3(tokens3);
     auto q3 = parser3.parse();
-    print_query(q3);
+    auto result3 = executor.execute(q3);
+    if (result3->success) {
+        cout << "Columns: ";
+        for (const auto& col : result3->columns) cout << col << " ";
+        cout << "\n";
+        cout << "Rows (" << result3->rows.size() << "):\n";
+        for (const auto& row : result3->rows) {
+            for (const auto& col : result3->columns) {
+                auto it = row.data.find(col);
+                if (it != row.data.end()) {
+                    cout << "  " << col << "=" << it->second;
+                }
+            }
+            cout << "\n";
+        }
+    } else {
+        cout << "✗ Failed: " << result3->error_message << "\n";
+    }
     delete q3;
+    delete result3;
     cout << "\n";
     
-    // Test 4: CREATE TABLE
-    cout << "Test 4: CREATE TABLE statement\n";
-    string sql4 = "CREATE TABLE users (id INT, name TEXT, age INT)";
+    // Test 4: SELECT with WHERE
+    cout << "Test 4: SELECT name FROM users WHERE age > 26\n";
+    string sql4 = "SELECT name FROM users WHERE age > 26";
     auto tokens4 = tokenizer.tokenize(sql4);
     Parser parser4(tokens4);
     auto q4 = parser4.parse();
-    print_query(q4);
+    auto result4 = executor.execute(q4);
+    if (result4->success) {
+        cout << "Results:\n";
+        for (const auto& row : result4->rows) {
+            auto it = row.data.find("name");
+            if (it != row.data.end()) {
+                cout << "  " << it->second << "\n";
+            }
+        }
+    } else {
+        cout << "✗ Failed: " << result4->error_message << "\n";
+    }
     delete q4;
+    delete result4;
+    cout << "\n";
+    
+    // Test 5: DELETE
+    cout << "Test 5: DELETE FROM users WHERE id = 2\n";
+    string sql5 = "DELETE FROM users WHERE id = 2";
+    auto tokens5 = tokenizer.tokenize(sql5);
+    Parser parser5(tokens5);
+    auto q5 = parser5.parse();
+    auto result5 = executor.execute(q5);
+    cout << (result5->success ? "✓ Success" : "✗ Failed: " + result5->error_message) << "\n";
+    delete q5;
+    delete result5;
+    cout << "\n";
+    
+    // Test 6: SELECT after DELETE
+    cout << "Test 6: SELECT id, name, age FROM users (after delete)\n";
+    string sql6 = "SELECT id, name, age FROM users";
+    auto tokens6 = tokenizer.tokenize(sql6);
+    Parser parser6(tokens6);
+    auto q6 = parser6.parse();
+    auto result6 = executor.execute(q6);
+    if (result6->success) {
+        cout << "Rows (" << result6->rows.size() << "):\n";
+        for (const auto& row : result6->rows) {
+            for (const auto& col : result6->columns) {
+                auto it = row.data.find(col);
+                if (it != row.data.end()) {
+                    cout << "  " << col << "=" << it->second;
+                }
+            }
+            cout << "\n";
+        }
+    } else {
+        cout << "✗ Failed: " << result6->error_message << "\n";
+    }
+    delete q6;
+    delete result6;
     
     cout << "\n=== All tests completed ===\n";
     return 0;

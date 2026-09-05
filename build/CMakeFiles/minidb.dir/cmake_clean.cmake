@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/minidb.dir/src/executor.cpp.o"
+  "CMakeFiles/minidb.dir/src/executor.cpp.o.d"
   "CMakeFiles/minidb.dir/src/main.cpp.o"
   "CMakeFiles/minidb.dir/src/main.cpp.o.d"
   "CMakeFiles/minidb.dir/src/parser.cpp.o"
