@@ -1,6 +1,6 @@
 """
 MiniDB - Streamlit Web Interface
-Communicates with the compiled minidb.exe C++ backend via subprocess.
+Communicates with the compiled minidb C++ backend via subprocess.
 """
 
 import streamlit as st
@@ -13,7 +13,54 @@ import time
 # ──────────────────────────────────────────────────────────────
 #  Config
 # ──────────────────────────────────────────────────────────────
-MINIDB_EXE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "build", "minidb.exe")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BUILD_DIR = os.path.join(BASE_DIR, "build")
+# Cross-platform: minidb on Linux/macOS, minidb.exe on Windows
+MINIDB_EXE = os.path.join(BUILD_DIR, "minidb.exe" if os.name == "nt" else "minidb")
+
+# ──────────────────────────────────────────────────────────────
+#  Auto-build on startup (for Streamlit Cloud)
+# ──────────────────────────────────────────────────────────────
+def ensure_minidb_built():
+    """Build minidb if executable doesn't exist."""
+    if os.path.exists(MINIDB_EXE):
+        return True
+    
+    if os.name == "nt":
+        # On Windows, we can't easily build from Python
+        return False
+    
+    # Linux/macOS: try to build with cmake/make
+    try:
+        os.makedirs(BUILD_DIR, exist_ok=True)
+        result = subprocess.run(
+            ["cmake", ".."],
+            cwd=BUILD_DIR,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        if result.returncode != 0:
+            return False
+        
+        result = subprocess.run(
+            ["make", "-j", str(os.cpu_count() or 4)],
+            cwd=BUILD_DIR,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        if result.returncode != 0:
+            return False
+        
+        # Make executable
+        os.chmod(MINIDB_EXE, 0o755)
+        return os.path.exists(MINIDB_EXE)
+    except Exception:
+        return False
+
+# Build on import (runs once per session)
+ensure_minidb_built()
 
 st.set_page_config(
     page_title="MiniDB — SQL Interface",
@@ -176,11 +223,12 @@ if "total_rows" not in st.session_state:
 #  Backend Communication
 # ──────────────────────────────────────────────────────────────
 def run_query(sql: str) -> dict:
-    """Send sql to minidb.exe via stdin and parse stdout."""
+    """Send sql to minidb via stdin and parse stdout."""
+    exe_name = "minidb.exe" if os.name == "nt" else "minidb"
     if not os.path.exists(MINIDB_EXE):
         return {
             "success": False,
-            "error": f"minidb.exe not found at:\n{MINIDB_EXE}\n\nPlease build the project first (cmake + make).",
+            "error": f"{exe_name} not found at:\n{MINIDB_EXE}\n\nPlease build the project first (cmake + make).",
             "columns": [], "rows": [], "raw": "", "elapsed_ms": 0,
         }
 
@@ -389,9 +437,10 @@ with st.sidebar:
 
     st.markdown("---")
     binary_ok = os.path.exists(MINIDB_EXE)
+    exe_name = "minidb.exe" if os.name == "nt" else "minidb"
     st.markdown(f"""
     <div style="font-size:0.72rem; color:#334155; text-align:center;">
-        Backend: <code style="color:#7c3aed">minidb.exe</code><br>
+        Backend: <code style="color:#7c3aed">{exe_name}</code><br>
         {"✅ Binary found" if binary_ok else "❌ Binary not found — run cmake build"}
     </div>
     """, unsafe_allow_html=True)

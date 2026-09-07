@@ -1,0 +1,7 @@
+build/
+__pycache__/
+*.pyc
+*.exe
+minidb_data/*.tbl
+.vscode/
+.idea/
