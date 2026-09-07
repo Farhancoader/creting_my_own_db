@@ -1,5 +1,5 @@
-CMakeFiles/minidb.dir/src/parser.cpp.o: \
- C:/Users/user/creating_my_own_database/database-engine/src/parser.cpp \
+CMakeFiles/minidb.dir/src/parser.cpp.obj: \
+ C:\Users\user\creating_my_own_database\database-engine\src\parser.cpp \
  C:/Users/user/creating_my_own_database/database-engine/include/parser.h \
  C:/Users/user/creating_my_own_database/database-engine/include/tokenizer.h \
  C:/msys64/ucrt64/include/c++/16.1.0/string \

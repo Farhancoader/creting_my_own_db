@@ -1,5 +1,5 @@
-CMakeFiles/minidb.dir/src/table_manager.cpp.o: \
- C:/Users/user/creating_my_own_database/database-engine/src/table_manager.cpp \
+CMakeFiles/minidb.dir/src/table_manager.cpp.obj: \
+ C:\Users\user\creating_my_own_database\database-engine\src\table_manager.cpp \
  C:/Users/user/creating_my_own_database/database-engine/include/table_manager.h \
  C:/Users/user/creating_my_own_database/database-engine/include/storage_engine.h \
  C:/msys64/ucrt64/include/c++/16.1.0/map \

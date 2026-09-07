@@ -1,7 +1,5 @@
-CMakeFiles/minidb.dir/src/executor.cpp.o: \
- C:/Users/user/creating_my_own_database/database-engine/src/executor.cpp \
- C:/Users/user/creating_my_own_database/database-engine/include/executor.h \
- C:/Users/user/creating_my_own_database/database-engine/include/parser.h \
+CMakeFiles/minidb.dir/src/main.cpp.obj: \
+ C:\Users\user\creating_my_own_database\database-engine\src\main.cpp \
  C:/Users/user/creating_my_own_database/database-engine/include/tokenizer.h \
  C:/msys64/ucrt64/include/c++/16.1.0/string \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/requires_hosted.h \
@@ -108,6 +106,8 @@ CMakeFiles/minidb.dir/src/executor.cpp.o: \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/stl_vector.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/stl_bvector.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/vector.tcc \
+ C:/Users/user/creating_my_own_database/database-engine/include/parser.h \
+ C:/Users/user/creating_my_own_database/database-engine/include/tokenizer.h \
  C:/msys64/ucrt64/include/c++/16.1.0/memory \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/stl_tempbuf.h \
  C:/msys64/ucrt64/include/c++/16.1.0/bits/stl_raw_storage_iter.h \
@@ -146,6 +146,8 @@ CMakeFiles/minidb.dir/src/executor.cpp.o: \
  C:/msys64/ucrt64/include/c++/16.1.0/backward/auto_ptr.h \
  C:/msys64/ucrt64/include/c++/16.1.0/pstl/glue_memory_defs.h \
  C:/msys64/ucrt64/include/c++/16.1.0/pstl/execution_defs.h \
+ C:/Users/user/creating_my_own_database/database-engine/include/executor.h \
+ C:/Users/user/creating_my_own_database/database-engine/include/parser.h \
  C:/Users/user/creating_my_own_database/database-engine/include/table_manager.h \
  C:/Users/user/creating_my_own_database/database-engine/include/storage_engine.h \
  C:/msys64/ucrt64/include/c++/16.1.0/map \
